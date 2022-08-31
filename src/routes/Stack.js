@@ -6,12 +6,13 @@ import Register from "../views/Register";
 import Settings from "../views/Settings";
 import Package from "../views/Package";
 import MyDrawer from "./Drawer";
+import Welcome from "../views/Welcome";
 
 const Stack = createStackNavigator();
 
 export default function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="Register" screenOptions={{
+    <Stack.Navigator initialRouteName="MyDrawer" screenOptions={{
         headerShown:false
     }}>
       <Stack.Screen name="Settings" component={Settings} />
@@ -20,6 +21,7 @@ export default function MyStack() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Package" component={Package} />
       <Stack.Screen name="MyDrawer" component={MyDrawer} />
+      <Stack.Screen name="Welcome" component={Welcome} />
     </Stack.Navigator>
   );
 }

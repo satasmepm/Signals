@@ -5,6 +5,7 @@ import commanStyles from '../constants/styles';
 import List from '../components/List';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Feather from 'react-native-vector-icons/Feather';
+import Header from '../components/Header';
 
 export default function Settings() {
     const context = useContext(TradeContext);
@@ -49,9 +50,11 @@ export default function Settings() {
     }
   return (
     <View style={context.styles.leftalignedcontainer}>
+
         <StatusBar backgroundColor={context.colors.primary} barStyle={theme=="Dark"?"light-content":"dark-content"}/>
-        
-        <Text style={context.styles.smallHeading}>Settings</Text>
+        <Header menu={true} heading={'Settings'} />
+      
+        {/* <Text style={context.styles.smallHeading}>Settings</Text> */}
          
         <List 
             heading={"THEME"}

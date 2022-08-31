@@ -33,7 +33,8 @@ const commanStyles = StyleSheet.create({
         marginVertical:10
       },
       textInput:{
-        width:windowWidth-40
+        width:windowWidth,
+        padding:20,
       },
       TextBoxView: {
         borderWidth:1,
@@ -41,10 +42,11 @@ const commanStyles = StyleSheet.create({
       },
       textBoxTitle:{
         position:'absolute',
-        top:0,
+        top:-5,
         left:15,
         zIndex:5,
-        paddingHorizontal:5
+        paddingHorizontal:5,
+        fontSize:13
       },
       header:{
         position:'absolute',
@@ -52,9 +54,17 @@ const commanStyles = StyleSheet.create({
         left:0,
         width:windowWidth,
         padding:15,
-        flexDirection:'row',
+        // flexDirection:'row',
         alignItems:'flex-start',
         justifyContent:'space-between'
+      },
+      card:{
+        width:(windowWidth-40)/2,
+        padding:7,
+        margin:5,
+        elevation:5,
+        backgroundColor:'white',
+        borderRadius:5
       }
 })
 

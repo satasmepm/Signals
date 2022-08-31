@@ -11,9 +11,9 @@ const TextBox = ({
     
     const context = useContext(TradeContext);
 return(
-    <Animatable.View animation={''} style={{paddingVertical:10}}>
+    <Animatable.View animation={'fadeInLeft'} style={{paddingVertical:7}}>
         <Text style={[context.styles.textInputTitle,commanStyles.textBoxTitle,{backgroundColor:context.colors.primary}]}>{title}</Text>
-        <View style={[commanStyles.TextBoxView]}>
+        <View style={[commanStyles.TextBoxView,{borderColor:context.colors.text}]}>
         {content}
         </View>    
     </Animatable.View>

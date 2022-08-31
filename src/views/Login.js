@@ -7,6 +7,7 @@ import TextBox from '../components/TextBox';
 import TitleImage from '../components/TitleImage';
 import Feather from 'react-native-vector-icons/Feather';
 import Header from '../components/Header';
+import CustomButton from "../components/CustomButton";
 
 export default function Package() {
 
@@ -16,15 +17,11 @@ export default function Package() {
 
   return (
     <View style={context.styles.container}>
-      <Header menu={false} heading={'Select Package'} subtitle={'Select a new Package to continue'} />
+      <Header heading={'Login'}/>
       <TitleImage icon={<Feather name={'briefcase'} size={25} color={context.colors.text} />}/>
   
 
-          <TouchableOpacity onPress={()=>navigation.navigate('MyDrawer')} style={commanStyles.buttonPrimary}>
-            <View>
-              <Text style={commanStyles.buttonText}>Continue</Text>
-            </View>
-          </TouchableOpacity> 
+<CustomButton title={'Sign In'} onPress={{}}/>
 
     </View>
   )
