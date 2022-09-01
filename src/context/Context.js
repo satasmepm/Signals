@@ -12,7 +12,7 @@ export const TradeProvider = ({ children }) => {
     const [token, setToken] = useState("");
     const [user, setUser] = useState();
     const [pack, setPack] = useState();
-    const [colors, setColors] = useState({primary:"white",text:"black",alphabg:"rgba(0,0,0,0.4)",headingtext:'#1B0A30',card:'#FFFFFF',toast:'#292929'})
+    const [colors, setColors] = useState({primary:"white",text:"black",alphabg:"rgba(0,0,0,0.1)",headingtext:'#1B0A30',card:'#FFFFFF',toast:'#292929'})
   //   const [colors, setColors] = useState({
   //     primary:"#1E1E1E",
   //     text:"rgba(255,255,255,0.8)",
@@ -74,7 +74,7 @@ export const TradeProvider = ({ children }) => {
                 primary:"white",
                 text:"black",
                 headingtext:"#1B0A30",
-                alphabg:"rgba(0,0,0,0.4)",
+                alphabg:"rgba(0,0,0,0.1)",
                 textinputtitle:'#160032',
                 card:'#FFFFFF',
                 toast:'#292929'
@@ -85,7 +85,7 @@ export const TradeProvider = ({ children }) => {
                 primary:"#1E1E1E",
                 text:"rgba(255,255,255,0.8)",
                 headingtext:"white",
-                alphabg:"rgba(255,255,255,0.4)",
+                alphabg:"rgba(255,255,255,0.1)",
                 textinputtitle:'#fff',
                 card:'#292929',
                 toast:'#E0E0E0'

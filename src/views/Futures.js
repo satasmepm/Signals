@@ -7,8 +7,8 @@ export default function Futures() {
   const context = useContext(TradeContext);
   return (
     <View style={context.styles.leftalignedcontainer}>
-      <Header menu={true} heading={'Futures'} />
-      <Text>Futures</Text>
+      <Header menu={true} heading={'Futures'} subtitle={'What are the Availabe signals'} />
+      {/* <Text>Futures</Text> */}
     </View>
   )
 }

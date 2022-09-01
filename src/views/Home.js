@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <View style={context.styles.leftalignedcontainer}>
       <Header menu={true} heading={'Home'} />
-      <Text>Home</Text>
+      {/* <Text>Home</Text> */}
     </View>
   )
 }

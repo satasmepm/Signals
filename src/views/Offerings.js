@@ -7,8 +7,8 @@ export default function Offerings() {
   const context = useContext(TradeContext);
   return (
     <View style={context.styles.leftalignedcontainer}>
-      <Header menu={true} heading={'Offerings'} />
-      <Text>Offerings</Text>
+      <Header menu={true} heading={'Offerings'} subtitle={'Your offers'}/>
+      {/* <Text>Offerings</Text> */}
     </View>
   )
 }
