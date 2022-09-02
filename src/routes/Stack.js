@@ -8,6 +8,7 @@ import Package from "../views/Package";
 import MyDrawer from "./Drawer";
 import Welcome from "../views/Welcome";
 import ChartView from "../views/ChartView";
+import Payment from "../views/Payment";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ export default function MyStack() {
       <Stack.Screen name="MyDrawer" component={MyDrawer} />
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen name="ChartView" component={ChartView} />
+      <Stack.Screen name="Payment" component={Payment} />
     </Stack.Navigator>
   );
 }

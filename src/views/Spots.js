@@ -1,4 +1,4 @@
-import { View, Text , Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
+import { View, Text , Image, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import React, { useContext, useEffect, useState ,useRef } from "react";
 import { TradeContext } from '../context/Context';
 import Header from '../components/Header';
@@ -22,8 +22,9 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function Spots() {
   const context = useContext(TradeContext);
-  const [pack, setPack] = useState(0);
+  const [plans, setPlans] = useState(null);
   const [spots, setspots] = useState(null);
+  const [count, setCount] = useState(0);
 
   const refRBSheet = useRef();
   const [expanded, setExpanded] = useState(true);
@@ -40,15 +41,31 @@ export default function Spots() {
     .get()
     .then(querySnapshot => {
       console.log('Total Signal Types: ', querySnapshot.size);
-  
+      setCount(querySnapshot.size)
       querySnapshot.forEach(documentSnapshot => {
         arr.push(documentSnapshot.data())
-        console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+        // console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
       });
       setspots(arr)
     });
 
+    var arr2 =[]
+    firestore()
+    .collection('Plans')
+    .orderBy('id', 'asc')
+    .get()
+    .then(querySnapshot => {
+      console.log('Total Signal Types: ', querySnapshot.size);
+  
+      querySnapshot.forEach(documentSnapshot => {
+        arr2.push(documentSnapshot.data())
+        // console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+      });
+      setPlans(arr2)
+    });
+
   }, []);
+
   const style = StyleSheet.create({
     container:{
         backgroundColor:context.colors.primary
@@ -62,11 +79,11 @@ export default function Spots() {
         // backgroundColor:'red',
         justifyContent:'space-between'
     }
-})
+  })
 
   return (
     <View style={[context.styles.leftalignedcontainer,{paddingTop:120}]}>
-      <Header menu={true} heading={'All Spots ('+'0'+')'} subtitle={'Spot Market'} />
+      <Header menu={true} heading={'All Spots ('+count+')'} subtitle={'Spot Market'} />
       {
         spots==null?
         null
@@ -186,6 +203,7 @@ export default function Spots() {
                       }
                     }}
                   >
+                    <ScrollView>
             <View style={style.modal}>
                 <View>
                   <Text style={context.styles.heading}>Gain Profit</Text>
@@ -196,15 +214,46 @@ export default function Spots() {
                   <Text style={[context.styles.heading,{fontSize:30,fontWeight:'bold'}]}>Get <Text style={{color:'#FFCC68'}}>Premium</Text></Text>
                   <Text style={{color:context.colors.text,fontSize:12,textAlign:'center'}}>You can get more signals by getting our premium Subscriptions. You can select your best plan under below and can try 3 days free trail version also </Text>
                   <Text style={[context.styles.heading,{fontSize:22,fontWeight:'500',margin:10}]}>Choose your plan</Text>
+                  <View style={{flexDirection:'row',flexWrap:'wrap'}}>
+                    {plans==null?
+                    null:
+                      plans.map((plan,index)=>
+                        plan.trial==0?
+                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan});refRBSheet.current.close()}} key={index} style={[commanStyles.plancard,{backgroundColor:context.colors.alphabg}]}>
+                          <Text style={[context.styles.text,{textAlign:'left',fontSize:12}]}>{plan.title}</Text>
+                          <Text style={[context.styles.text,{textAlign:'left'}]}>LKR {plan.price}</Text>
+                        </TouchableOpacity>
+                        :
+                        null
+                      )
+                    }
+                  </View>
+                  <Text style={{color:context.colors.text,fontSize:12,textAlign:'center',paddingTop:10}}>By Joining, you agree to our privacy policy and terms and conditions</Text>
+                  {plans==null?
+                    null:
+                      plans.map((plan,index)=>
+                        plan.trial==1?
+                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan});refRBSheet.current.close()}} key={index} style={[commanStyles.tralcard,{backgroundColor:'#1B0A30'}]}>
+                          <Text style={{textAlign:'left',fontSize:12,color:'#fff'}}>{plan.title}</Text>
+                          <Text style={{textAlign:'left',color:'#fff'}}>LKR {plan.price}</Text>
+                        </TouchableOpacity>
+                        :
+                        null
+                      )
+                    }
+                  <Text style={{color:context.colors.text,fontSize:12,textAlign:'center',paddingTop:10}}>Billed Monthly, You can cancel anytime</Text>
                 </View>
-                <View style={{alignItems:'flex-end'}}>
+                {/* <View style={{alignItems:'flex-end'}}>
                     <TouchableOpacity style={commanStyles.buttonPrimary} onPress={()=>{refRBSheet.current.close()}}>
                         <View>
                             <Text style={commanStyles.buttonText}>Cancel</Text>
                         </View>
                     </TouchableOpacity>            
-                </View>
+                </View> */}
+                
+                  
             </View>
+            </ScrollView>
       </RBSheet>
 
     </View>

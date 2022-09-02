@@ -126,6 +126,18 @@ const commanStyles = StyleSheet.create({
         fontSize:10,
         color:'#ffffff',
         fontWeight:'700'
+      },
+      plancard:{
+        width:(windowWidth-50)/2,
+        margin:2.5,
+        padding:10,
+        borderRadius:7
+      },
+      tralcard:{
+        width:(windowWidth-40),
+        margin:2.5,
+        padding:10,
+        borderRadius:7
       }
 })
 
