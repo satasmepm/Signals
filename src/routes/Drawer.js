@@ -13,6 +13,7 @@ import {
 import { View, Text,StyleSheet, TouchableOpacity , StatusBar, Modal } from 'react-native'
 import { TradeContext } from '../context/Context';
 import Feather from 'react-native-vector-icons/Feather';
+import Profile from "../views/Profile";
 
 
 
@@ -61,6 +62,15 @@ function MyDrawer() {
       }}
       />
 
+      <Drawer.Screen 
+      name="Profile" 
+      component={Profile}  
+      options={{
+        drawerLabel:'Profile',
+        drawerIcon:()=><Feather name={'user'} size={20} color={context.colors.text} />
+      }}
+      />      
+      
       <Drawer.Screen 
       name="Settings" 
       component={Settings}  
