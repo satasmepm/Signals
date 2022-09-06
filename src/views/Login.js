@@ -16,7 +16,7 @@ import toastConfig from '../components/CustomToast';
 
 
 
-export default function Package() {
+export default function Login() {
 
   const [WINDOW_HEIGHT, setHeight] = useState('');
   const [WINDOW_WIDTH, setWidth] = useState('');
@@ -150,10 +150,11 @@ export default function Package() {
         <Text style={styles.welcome_sub_text}>Log in to your already created acount of signals</Text>
       </View>
       <View style={commanStyles.textInput}>
-        <TextBox title={'Email'}
+        <TextBox title={'Email address'}
           content={
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingRight: 10 }}>
               <TextInput
+              placeholder="Please enter your email here"
                 onChangeText={(text) => setEmail(text)}
                 value={email}
                 style={{ width: "90%", paddingLeft: 10, color: context.colors.text }}
@@ -187,6 +188,7 @@ export default function Package() {
           content={
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingRight: 10 }}>
               <TextInput
+                  placeholder="Please enter your password here"
                 onChangeText={(text) => setpassword(text)}
                 value={password}
                 secureTextEntry={showp}

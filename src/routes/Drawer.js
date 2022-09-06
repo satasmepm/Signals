@@ -101,7 +101,9 @@ function MyDrawer() {
       <Drawer.Screen
         name={context.user != null ? "login" : "Logout"}
         component={SignOut}
+        
         options={{
+          
           drawerLabel: context.user != null ? "login" : "Logout",
           drawerIcon: () => <Feather name={'log-in'} size={20} color={context.colors.text} />
         }}
