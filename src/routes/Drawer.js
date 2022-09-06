@@ -13,20 +13,29 @@ import {
 import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Modal } from 'react-native'
 import { TradeContext } from '../context/Context';
 import Feather from 'react-native-vector-icons/Feather';
+import Profile from "../views/Profile";
+import auth from '@react-native-firebase/auth';
 
-const signOut = () => {
+
+const SignOut = () => {
+  
+
   auth()
     .signOut()
-    .then(() => console.log('User signed out!'));
+    .then(() => {
+      console.log('User signed out!');
+      navigation.navigate('Login');
+    });
 
 }
 
 function CustomDrawerContent(props) {
 
+
   const context = useContext(TradeContext);
 
-  
- 
+
+
 
   return (
     <DrawerContentScrollView style={{ backgroundColor: context.colors.primary }} {...props}>
@@ -69,6 +78,7 @@ function MyDrawer() {
         }}
       />
 
+
       <Drawer.Screen
         name="Settings"
         component={Settings}
@@ -77,10 +87,20 @@ function MyDrawer() {
           drawerIcon: () => <Feather name={'settings'} size={20} color={context.colors.text} />
         }}
       />
+      <Drawer.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          drawerLabel: 'Profile',
+          drawerIcon: () => <Feather name={'user'} size={20} color={context.colors.text} />
+        }}
+      />
+
+
 
       <Drawer.Screen
         name={context.user != null ? "login" : "Logout"}
-        component={signOut}
+        component={SignOut}
         options={{
           drawerLabel: context.user != null ? "login" : "Logout",
           drawerIcon: () => <Feather name={'log-in'} size={20} color={context.colors.text} />

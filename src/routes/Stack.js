@@ -10,6 +10,7 @@ import MyDrawer from "./Drawer";
 import Welcome from "../views/Welcome";
 import ChartView from "../views/ChartView";
 import Payment from "../views/Payment";
+import Profile from "../views/Profile";
 
 import auth from '@react-native-firebase/auth';
 
@@ -22,7 +23,6 @@ export default function MyStack() {
 
   function onAuthStateChanged(user) {
     setUser(user);
-    // console.log(">>>>>>>>>>>>>>>>> : "+user.email);
     if (initializing) setInitializing(false);
   }
 
@@ -64,6 +64,7 @@ export default function MyStack() {
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen name="ChartView" component={ChartView} />
       <Stack.Screen name="Payment" component={Payment} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 }
