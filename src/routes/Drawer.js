@@ -15,11 +15,12 @@ import { TradeContext } from '../context/Context';
 import Feather from 'react-native-vector-icons/Feather';
 import Profile from "../views/Profile";
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useNavigation } from '@react-navigation/native';
 
 const SignOut = () => {
-  
+
   const navigation = useNavigation();
 
   auth()
@@ -28,9 +29,22 @@ const SignOut = () => {
       console.log('User signed out!');
       navigation.navigate('Login');
     });
-
+    removeItemValue();
 }
 
+
+
+const removeItemValue = async () => {
+  try {
+    await AsyncStorage.removeItem("user");
+    await AsyncStorage.removeItem("user_email");
+    // return true;
+  }
+  catch (exception) {
+    // return false;
+  }
+
+}
 function CustomDrawerContent(props) {
 
 

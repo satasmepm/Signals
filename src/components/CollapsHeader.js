@@ -71,7 +71,7 @@ const CollapsHeader = ({
             headerExpand()
             mooveLR()
         }
-        console.log(direction);
+        // console.log(direction);
       }
       const mooveLR = ()=>{
         Animated.timing(
@@ -143,6 +143,7 @@ return(
     <ScrollView 
     onScroll={(event)=>onScroll(event)}
     contentContainerStyle={{paddingTop:0}}
+    scrollEventThrottle={16}
       >
         {children}
     </ScrollView>

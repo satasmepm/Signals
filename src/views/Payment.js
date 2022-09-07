@@ -15,6 +15,7 @@ import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import CustomButton from '../components/CustomButton';
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'react-native-image-picker';
+import moment from 'moment';
 
 import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
@@ -31,6 +32,8 @@ export default function Payment() {
     const [modalVisible, setModalVisible] = useState(true);
     const [wallets, setWallets] = useState(null);
     const [response, setResponse] = React.useState(null);
+    
+    const [user, setUser] = useState(null);
 
     const navigation = useNavigation();
 
@@ -74,6 +77,19 @@ export default function Payment() {
       });
       setWallets(arr)
     });
+
+    firestore()
+        .collection('Users')
+        .doc(context.user)
+        .get()
+        .then(documentSnapshot => {
+          console.log('User exists: ', documentSnapshot.exists);
+
+          if(documentSnapshot.exists){
+            var data= documentSnapshot.data()
+            setUser(documentSnapshot.data())
+          }
+        });
 
   }, []);
 
@@ -125,20 +141,97 @@ export default function Payment() {
           text1: "Done!",
           props: { err:false ,colors:context.colors}
         });
+        addUserBuyPlan(1)
     }
   }
 
   const updatePlan =()=>{
+    route.params.pkg=='1'?
     firestore()
     .collection('Users')
     .doc(context.user)
     .update({
-      plan: route.params.plan.id,
+      spotPlan: route.params.plan.id,
     })
     .then(() => {
       console.log('User updated!');
+      addUserBuyPlan(0)
+    })
+    :
+    firestore()
+    .collection('Users')
+    .doc(context.user)
+    .update({
+      futurePlan: route.params.plan.id,
+    })
+    .then(() => {
+      console.log('User updated!');
+      addUserBuyPlan(0)
     });
     navigation.goBack()
+  }
+
+  const addUserBuyPlan = (uploaded) => {
+    var data ={}
+    var updatedata ={}
+
+      if(route.params.pkg==1){
+        data ={
+          user: context.user,
+          signaltype: user.package,
+          spotplan:route.params.plan.id,
+          paid:uploaded,
+          accepted:0,
+          time:moment(new Date()).format("YYYY-MM-DD hh:mm:ssA")
+        } 
+        updatedata={
+          spotplan:route.params.plan.id,
+        }
+      }
+      else{
+          data ={
+          user: context.user,
+          signaltype: user.package,
+          futureplan:route.params.plan.id,
+          paid:uploaded,
+          accepted:0,
+          time:moment(new Date()).format("YYYY-MM-DD hh:mm:ssA")
+        } 
+        updatedata={
+          futureplan:route.params.plan.id,
+        }
+      }
+
+
+      firestore()
+        .collection('UserBuyPlans')
+        .doc(context.user)
+        .get()
+        .then(documentSnapshot => {
+          console.log('User exists: ', documentSnapshot.exists);
+
+          if(documentSnapshot.exists){
+            firestore()
+            .collection('UserBuyPlans')
+            .doc(context.user)
+            .update(updatedata)
+            .then(() => {
+              console.log('UserBuyPlans updated!');
+            });
+            
+          }
+          else{
+            firestore()
+              .collection('UserBuyPlans')
+              .doc(context.user)
+              .set(data)
+              .then(() => {
+                console.log('UserBuyPlans added!');
+              });
+              } 
+        });
+
+
   }
 
   return (

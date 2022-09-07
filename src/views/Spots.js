@@ -28,6 +28,7 @@ export default function Spots() {
 
   const refRBSheet = useRef();
   const [expanded, setExpanded] = useState(true);
+  const [choosen, setChoosen] = useState(false);
 
   const navigation = useNavigation();
 
@@ -64,8 +65,35 @@ export default function Spots() {
       setPlans(arr2)
     });
 
+
+
   }, []);
 
+  const checkExist=()=>{
+    firestore()
+    .collection('UserBuyPlans')
+    .doc(context.user)
+    .get()
+    .then(documentSnapshot => {
+      console.log('User exists: ', documentSnapshot.exists);
+      if(documentSnapshot.exists){
+
+        // setChoosen(documentSnapshot.exists)
+        console.log(documentSnapshot.data())
+        var data=documentSnapshot.data()
+          if(data.spotplan==0){
+            setChoosen(false)
+          }
+          else{
+            setChoosen(true)
+          }
+      }
+      else{
+        setChoosen(false)
+      }
+      
+    })
+  }
   const style = StyleSheet.create({
     container:{
         backgroundColor:context.colors.primary
@@ -80,6 +108,22 @@ export default function Spots() {
         justifyContent:'space-between'
     }
   })
+
+  const deleteUserBuyPlan = (uploaded) => {
+
+    firestore()
+    .collection('UserBuyPlans')
+    .doc(context.user)
+    .update({
+      spotplan:0,
+      time:moment(new Date()).format("YYYY-MM-DD hh:mm:ssA")
+    })
+    .then(() => {
+      setChoosen(false)
+      console.log('plan updateted!');
+    });
+
+}
 
   return (
     <View style={[context.styles.leftalignedcontainer,{paddingTop:120}]}>
@@ -169,7 +213,7 @@ export default function Spots() {
                         <Text style={commanStyles.dates}>{moment(new Date(spot.time.seconds * 1000)).format("MMM DD | hh:mm:ssA")}</Text>
                   </View>
                   <View style={[commanStyles.spaceBetweenRow,{marginTop:5}]}>
-                  <TouchableOpacity onPress={()=>{refRBSheet.current.open()}} style={[commanStyles.buttonPrimary,{paddingVertical:2}]}>
+                  <TouchableOpacity onPress={()=>{{refRBSheet.current.open();checkExist()}}} style={[commanStyles.buttonPrimary,{paddingVertical:2}]}>
                     <View>
                     <Text style={[commanStyles.buttonText,{fontSize:11}]}>Join with Premium</Text>
                     </View>
@@ -214,12 +258,24 @@ export default function Spots() {
                   <Text style={[context.styles.heading,{fontSize:30,fontWeight:'bold'}]}>Get <Text style={{color:'#FFCC68'}}>Premium</Text></Text>
                   <Text style={{color:context.colors.text,fontSize:12,textAlign:'center'}}>You can get more signals by getting our premium Subscriptions. You can select your best plan under below and can try 3 days free trail version also </Text>
                   <Text style={[context.styles.heading,{fontSize:22,fontWeight:'500',margin:10}]}>Choose your plan</Text>
+                  
+                    <View>
+                    {
+                      choosen?
+                    <View style={{position:'absolute',width:'101%',top:0,left:0,height:'100%',padding:15,backgroundColor:context.colors.alphabg2,zIndex:10,alignItems:'center',justifyContent:'center'}}>
+                      <Text style={{color:context.colors.primary,fontSize:15,textAlign:'center'}}>You Choose a Package and not upload the reciept yet. If You need to change the package, tap bellow button{'\n'}</Text>
+                      <CustomButton title={'Change Plan'} onPress={()=>{deleteUserBuyPlan()}}/>
+                    </View>
+                    :
+                    null
+                  }
                   <View style={{flexDirection:'row',flexWrap:'wrap'}}>
+                    
                     {plans==null?
                     null:
                       plans.map((plan,index)=>
                         plan.trial==0?
-                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan});refRBSheet.current.close()}} key={index} style={[commanStyles.plancard,{backgroundColor:context.colors.alphabg}]}>
+                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan,pkg:1});refRBSheet.current.close()}} key={index} style={[commanStyles.plancard,{backgroundColor:context.colors.alphabg}]}>
                           <Text style={[context.styles.text,{textAlign:'left',fontSize:12}]}>{plan.title}</Text>
                           <Text style={[context.styles.text,{textAlign:'left'}]}>LKR {plan.price}</Text>
                         </TouchableOpacity>
@@ -233,7 +289,7 @@ export default function Spots() {
                     null:
                       plans.map((plan,index)=>
                         plan.trial==1?
-                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan});refRBSheet.current.close()}} key={index} style={[commanStyles.tralcard,{backgroundColor:'#1B0A30'}]}>
+                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan,pkg:'1'});refRBSheet.current.close()}} key={index} style={[commanStyles.tralcard,{backgroundColor:'#1B0A30'}]}>
                           <Text style={{textAlign:'left',fontSize:12,color:'#fff'}}>{plan.title}</Text>
                           <Text style={{textAlign:'left',color:'#fff'}}>LKR {plan.price}</Text>
                         </TouchableOpacity>
@@ -241,6 +297,8 @@ export default function Spots() {
                         null
                       )
                     }
+                    
+                    </View>
                   <Text style={{color:context.colors.text,fontSize:12,textAlign:'center',paddingTop:10}}>Billed Monthly, You can cancel anytime</Text>
                 </View>
                 {/* <View style={{alignItems:'flex-end'}}>

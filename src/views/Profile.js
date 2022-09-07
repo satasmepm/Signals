@@ -1,4 +1,4 @@
-import { View, Text , Image, TouchableOpacity,StyleSheet,Dimensions,ScrollView} from 'react-native'
+import { View, Text , Image, TouchableOpacity,StyleSheet,Dimensions,ScrollView,Animated} from 'react-native'
 import React, { useContext, useEffect, useState , useRef } from "react";
 import { TradeContext } from '../context/Context';
 import Header from '../components/Header';
@@ -12,12 +12,17 @@ import commanStyles from '../constants/styles';
 import { useRoute } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import StickyParallaxHeader from 'react-native-sticky-parallax-header'; 
 
 import CustomButton from '../components/CustomButton';
+
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'react-native-image-picker';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CollapsHeader from '../components/CollapsHeader';
+import { useNavigation , DrawerActions } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -25,7 +30,16 @@ export default function Profile() {
 
     const context = useContext(TradeContext);
     const refRBSheet = useRef();
+    const headerRef = useRef();
     const [response, setResponse] = React.useState(null);
+    const [plan, setPlan] = useState(null);
+    const [user, setUser] = useState(null);
+    const [spot, setSpot] = useState(null);
+    const [future, setFuture] = useState(null);
+
+    const scroll = useRef(new Animated.Value(0)).current;
+
+    const navigation = useNavigation();
 
     const style = StyleSheet.create({
         container:{
@@ -93,10 +107,216 @@ export default function Profile() {
             });
         }
       }
+      const renderForeground = () => {
+
+        const titleOpacity = scroll.interpolate({
+          inputRange: [0, 106, 154],
+          outputRange: [1, 1, 0],
+          extrapolate: 'clamp'
+        })
+    
+        return (
+          <View style={{paddingLeft:0}}>
+              {/* <Text>{'\n'}</Text> */}
+            <Animated.View style={{ opacity: titleOpacity ,alignItems:'center',backgroundColor:context.colors.primary,borderBottomLeftRadius:20,borderBottomRightRadius:20,width: '100%',}}>
+                
+                <Image source={require('../../assets/images/profile.png')} style={{width:60,height: 60,borderRadius:50,marginTop:2.5,zIndex:5}} />
+                <View style={{borderRadius:50,width:65,height:65,position: 'absolute',top:0,backgroundColor:context.colors.alphabg}} />
+              {/* <View> */}
+              <Text style={{fontSize:17,color:context.colors.text,marginTop:5}}>{context.user}</Text>
+
+            </Animated.View>
+          </View>
+        )
+      }
+
+      const renderHeader = () => {
+        const opacity = scroll.interpolate({
+          inputRange: [0, 100, 160],
+          outputRange: [0,0, 1],
+          extrapolate: 'clamp'
+        })
+    
+        return (
+          <View style={{backgroundColor:context.colors.primary}}>
+            <Animated.View style={{ opacity ,flexDirection:'row',alignItems:'center',padding:10,justifyContent:'space-between'}}>
+              <View style={{flexDirection:'row',alignContent:'center'}}> 
+              <Image source={require('../../assets/images/profile.png')} style={{width:25,height: 25,borderRadius:50,marginLeft:10,}} />
+                <Text style={{paddingLeft:10,fontSize:17,backgroundColor:context.colors.primary,color:context.colors.text}}>{context.user}</Text>
+              </View>    
+              <TouchableOpacity onPress={()=>{navigation.dispatch(DrawerActions.openDrawer())}}>
+                <Feather name={'menu'} size={25} color={context.colors.text} />
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+        )
+      }
+
+
+      useEffect(() => {
+        var arr =[]
+        var arr2 =[]
+        firestore()
+        .collection('Users')
+        .doc(context.user)
+        .get()
+        .then(documentSnapshot => {
+          console.log('User exists: ', documentSnapshot.exists);
+
+          if(documentSnapshot.exists){
+            var data= documentSnapshot.data()
+            setUser(documentSnapshot.data())
+            if(data.package==1)   {
+              firestore()
+                .collection('Plans')
+                // Filter results
+                .where('id', '==', data.spotPlan)
+                .get()
+                .then(querySnapshot => {
+                  /* ... */
+                  querySnapshot.forEach(documentSnapshot => {
+                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+                    arr.push(documentSnapshot.data())
+                  });
+                  setSpot(arr)
+                  // console.log(querySnapshot.data())
+                });
+            }  
+            
+            if(data.package==2)   {
+              firestore()
+                .collection('FuturePlans')
+                // Filter results
+                .where('id', '==', data.futurePlan)
+                .get()
+                .then(querySnapshot => {
+                  /* ... */
+                  querySnapshot.forEach(documentSnapshot => {
+                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+                    arr2.push(documentSnapshot.data())
+                  });
+                  setFuture(arr2)
+                  // console.log(querySnapshot.data())
+                });
+            }
+            if(data.package==3)   {
+              firestore()
+                .collection('FuturePlans')
+                // Filter results
+                .where('id', '==', data.futurePlan)
+                .get()
+                .then(querySnapshot => {
+                  /* ... */
+                  querySnapshot.forEach(documentSnapshot => {
+                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+                    arr2.push(documentSnapshot.data())
+                  });
+                  setFuture(arr2)
+                  // console.log(querySnapshot.data())
+                });
+
+                firestore()
+                .collection('Plans')
+                // Filter results
+                .where('id', '==', data.spotPlan)
+                .get()
+                .then(querySnapshot => {
+                  /* ... */
+                  querySnapshot.forEach(documentSnapshot => {
+                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+                    arr.push(documentSnapshot.data())
+                  });
+                  setSpot(arr)
+                  // console.log(querySnapshot.data())
+                });
+            }
+            
+            
+          }
+        });
+      }, []);
+
 
   return (
     <View style={[context.styles.container,{paddingTop:0}]}>
-        <CollapsHeader menu={true} heading={'User Profile'} subtitle={''} >
+              <TouchableOpacity onPress={()=>{navigation.dispatch(DrawerActions.openDrawer())}} style={{position:'absolute',right:10,top:10,zIndex:9}}>
+                <Feather name={'menu'} size={25} color={context.colors.text} />
+              </TouchableOpacity>
+      
+      <StickyParallaxHeader
+        backgroundColor={'transparent'}
+        bounces={true}
+        foreground={renderForeground()}
+        header={renderHeader()}
+        parallaxHeight={10}
+        image={null}
+        headerHeight={50}
+        headerSize={() => {}}
+        onEndReached={() => {}}
+        scrollEvent={Animated.event([{ nativeEvent: { contentOffset: { y: scroll } } }])}
+        leftTopIcon={require('../../assets/images/profile.png')}
+        leftTopIconOnPress={()=>navigation.dispatch(DrawerActions.toggleDrawer())}
+        // image={image}
+        rightTopIcon={null}
+      >
+            <View style={{marginTop:80,padding:10}}>
+              {
+                user==null?
+                null
+                :
+                user.package==1?
+                spot==null?
+                      null
+                      :
+              <View style={{width:'100%',backgroundColor:context.colors.alphabg}}>
+                  <Text>{spot[0].price}</Text>
+                  <Text>ttt</Text>
+                  <Text>ttt</Text>
+              </View>
+              :
+              user.package==2?
+              future==null?
+                      null
+                      :
+              <View style={{width:'100%',backgroundColor:context.colors.alphabg}}>
+                  <Text>{future[0].price}</Text>
+                  <Text>ttt</Text>
+                  <Text>ttt</Text>
+              </View>
+              :
+              user.package==3?
+              <View style={{width:'100%'}}>
+                  {
+                    spot==null?
+                      null
+                      :
+                    <Animatable.View animation={'flipInY'} style={[commanStyles.profilecard,{backgroundColor:context.colors.card}]}>
+                      <Text style={{color:context.colors.text,fontSize:18}}>Spot Plan</Text>
+                      <Text style={{color:context.colors.text}}>{spot[0].title}</Text>
+                    </Animatable.View>         
+                  }
+
+                  {
+                    future==null?
+                    null
+                    :
+                    <Animatable.View animation={'flipInY'} style={[commanStyles.profilecard,{backgroundColor:context.colors.card}]}>
+                      <Text style={{color:context.colors.text,fontSize:18}}>Future Plan</Text>
+                      <Text style={{color:context.colors.text}}>{future[0].title}</Text>
+                    </Animatable.View>
+                  }
+
+                  {/* <Text>ttt</Text> */}
+              </View> 
+              :
+              null             
+              }
+            </View>
+
+      </StickyParallaxHeader>
+
+
+        {/* <CollapsHeader menu={true} heading={'User Profile'} subtitle={''} >
           <Text>ggg</Text>
           <Text>ggg</Text>
           <Text>ggg</Text>
@@ -136,17 +356,7 @@ export default function Profile() {
           <Text>ggg</Text>
           <Text>ggg</Text>
           <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-        </CollapsHeader>
+        </CollapsHeader> */}
         <CustomButton title={'Pay for Package'} onPress={()=>refRBSheet.current.open()}/>
         <RBSheet
                     ref={refRBSheet}

@@ -138,6 +138,12 @@ const commanStyles = StyleSheet.create({
         margin:2.5,
         padding:10,
         borderRadius:7
+      },
+      profilecard:{
+        padding:10,
+        borderRadius:10,
+        marginBottom:5,
+        elevation:3
       }
 })
 

@@ -219,7 +219,7 @@ export default function Spots() {
                     null:
                       plans.map((plan,index)=>
                         plan.trial==0?
-                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan});refRBSheet.current.close()}} key={index} style={[commanStyles.plancard,{backgroundColor:context.colors.alphabg}]}>
+                        <TouchableOpacity onPress={()=>{navigation.navigate('Payment',{plan:plan,pkg:2});refRBSheet.current.close()}} key={index} style={[commanStyles.plancard,{backgroundColor:context.colors.alphabg}]}>
                           <Text style={[context.styles.text,{textAlign:'left',fontSize:12}]}>{plan.title}</Text>
                           <Text style={[context.styles.text,{textAlign:'left'}]}>LKR {plan.price}</Text>
                         </TouchableOpacity>
