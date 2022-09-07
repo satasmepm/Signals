@@ -16,9 +16,11 @@ import Feather from 'react-native-vector-icons/Feather';
 import Profile from "../views/Profile";
 import auth from '@react-native-firebase/auth';
 
+import { useNavigation } from '@react-navigation/native';
 
 const SignOut = () => {
   
+  const navigation = useNavigation();
 
   auth()
     .signOut()
@@ -103,7 +105,7 @@ function MyDrawer() {
         component={SignOut}
         options={{
           drawerLabel: context.user != null ? "login" : "Logout",
-          drawerIcon: () => <Feather name={'log-in'} size={20} color={context.colors.text} />
+          drawerIcon: () => <Feather name={'log-out'} size={20} color={context.colors.text} />
         }}
       />
 

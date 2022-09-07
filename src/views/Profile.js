@@ -1,4 +1,4 @@
-import { View, Text , Image, TouchableOpacity,StyleSheet} from 'react-native'
+import { View, Text , Image, TouchableOpacity,StyleSheet,Dimensions,ScrollView} from 'react-native'
 import React, { useContext, useEffect, useState , useRef } from "react";
 import { TradeContext } from '../context/Context';
 import Header from '../components/Header';
@@ -10,17 +10,22 @@ import { List } from 'react-native-paper';
 import moment from 'moment';
 import commanStyles from '../constants/styles';
 import { useRoute } from '@react-navigation/native';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import CustomButton from '../components/CustomButton';
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'react-native-image-picker';
 import RBSheet from "react-native-raw-bottom-sheet";
+import CollapsHeader from '../components/CollapsHeader';
 
-
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 export default function Profile() {
 
     const context = useContext(TradeContext);
     const refRBSheet = useRef();
+    const [response, setResponse] = React.useState(null);
 
     const style = StyleSheet.create({
         container:{
@@ -90,15 +95,65 @@ export default function Profile() {
       }
 
   return (
-    <View style={context.styles.container}>
-        <Header menu={true} heading={'Profile'} subtitle={''} />
+    <View style={[context.styles.container,{paddingTop:0}]}>
+        <CollapsHeader menu={true} heading={'User Profile'} subtitle={''} >
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+          <Text>ggg</Text>
+        </CollapsHeader>
         <CustomButton title={'Pay for Package'} onPress={()=>refRBSheet.current.open()}/>
         <RBSheet
                     ref={refRBSheet}
                     closeOnDragDown={true}
                     closeOnPressMask={true}
                     closeOnPressBack={true}
-                    height={windowHeight-70}
+                    height={windowHeight/2}
                     customStyles={{
                       wrapper: {
                         backgroundColor: context.colors.alphabg

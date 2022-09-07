@@ -15,7 +15,7 @@ const Header = ({
     const navigation = useNavigation();
     const context = useContext(TradeContext);
 return(
-    <Animatable.View animation={'fadeInDown'} style={commanStyles.header}>
+    <Animatable.View animation={'fadeIn'} duration={400} style={commanStyles.header}>
         <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%'}}>
         {/* {
             menu?

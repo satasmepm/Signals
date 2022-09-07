@@ -83,7 +83,7 @@ export default function Spots() {
 
   return (
     <View style={[context.styles.leftalignedcontainer,{paddingTop:120}]}>
-    <Header menu={true} heading={'Futures'} subtitle={'What are the Availabe signals'} />
+    <Header menu={true} heading={'Futures ('+count+')'} subtitle={'What are the Availabe signals'} />
       {
         futures==null?
         null
