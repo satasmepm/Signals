@@ -13,7 +13,7 @@ import { Validation } from '../components/Validation';
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import toastConfig from '../components/CustomToast';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Login() {
@@ -137,6 +137,7 @@ export default function Login() {
   const storeUser = async (value) => {
     try {
       await AsyncStorage.setItem('user', value)
+     
     } catch (e) {
       // saving error
     }
@@ -223,7 +224,7 @@ export default function Login() {
             </View>
           }
         />
-        <Text style={styles.forgot_password}>Forgot Password?</Text>
+        <Text onPress={()=>navigation.navigate("ForgotPassword")} style={styles.forgot_password}>Forgot Password?</Text>
       </View>
 
 
