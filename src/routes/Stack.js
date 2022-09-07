@@ -13,6 +13,8 @@ import Payment from "../views/Payment";
 import Profile from "../views/Profile";
 
 import auth from '@react-native-firebase/auth';
+import ForgotPassword from "../views/ForgotPassword";
+import CheckForgotPassword from "../views/CheckPasswordResetMail";
 
 
 const Stack = createStackNavigator();
@@ -56,7 +58,6 @@ export default function MyStack() {
       }}>
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="Login" component={Login} />
-
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Package" component={Package} />
@@ -65,6 +66,10 @@ export default function MyStack() {
       <Stack.Screen name="ChartView" component={ChartView} />
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="Profile" component={Profile} />
+
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="CheckForgotPassword" component={CheckForgotPassword} />
+      
     </Stack.Navigator>
   );
 }
