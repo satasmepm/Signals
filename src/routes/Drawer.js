@@ -30,6 +30,23 @@ const SignOut = () => {
       navigation.navigate('Login');
     });
     removeItemValue();
+<<<<<<< HEAD
+=======
+}
+
+
+
+const removeItemValue = async () => {
+  try {
+    await AsyncStorage.removeItem("user");
+    await AsyncStorage.removeItem("user_email");
+    // return true;
+  }
+  catch (exception) {
+    // return false;
+  }
+
+>>>>>>> 76ac281454edc9110a2f21c6b40d9970a321b071
 }
 
 
@@ -56,6 +73,7 @@ function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView style={{ backgroundColor: context.colors.primary }} {...props}>
       <View style={{ padding: 15 }}>
+   
         <View style={{ backgroundColor: context.colors.toast, alignSelf: 'flex-start', padding: 5, borderRadius: 15 }}>
           <Feather name={'user'} size={40} color={context.colors.primary} />
         </View>
@@ -115,12 +133,12 @@ function MyDrawer() {
 
 
       <Drawer.Screen
-        name={context.user != null ? "login" : "Logout"}
+        name={context.user != null ? "Logout" : "Login"}
         component={SignOut}
-        
+
         options={{
-          
-          drawerLabel: context.user != null ? "login" : "Logout",
+
+          drawerLabel: context.user != null ? "Logout" : "Login",
           drawerIcon: () => <Feather name={'log-out'} size={20} color={context.colors.text} />
         }}
       />
