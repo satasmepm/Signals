@@ -91,7 +91,7 @@ const commanStyles = StyleSheet.create({
         alignItems:'center'
       },
       coinIcon:{
-        resizeMode:'cover',
+        resizeMode:'contain',
         width:'100%',
         height:'100%'
       },
@@ -144,7 +144,33 @@ const commanStyles = StyleSheet.create({
         borderRadius:10,
         marginBottom:5,
         elevation:3
-      }
+      },
+      ////////////////////////////////////////// chamil/////////////////
+      linearGradient: {
+        flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 5
+      },
+      plancard2:{
+        width:(windowWidth-50)/2,
+        margin:2.5,
+        padding:10,
+        borderRadius:7,
+        borderWidth:0.3,
+        borderColor:"grey"
+      },
+      buttonText: {
+        fontSize: 18,
+        fontFamily: 'Gill Sans',
+        textAlign: 'center',
+        margin: 10,
+        color: '#ffffff',
+
+        
+      },
+      
+    
 })
 
 export default commanStyles;

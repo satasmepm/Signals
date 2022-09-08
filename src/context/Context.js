@@ -114,7 +114,7 @@ export const TradeProvider = ({ children }) => {
       },
     heading: {
         fontSize: 35,
-        fontWeight: '100',
+        fontWeight: '300',
         // textAlign: 'center',
         color:colors.headingtext
       },

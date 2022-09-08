@@ -10,7 +10,7 @@ import { List } from 'react-native-paper';
 import moment from 'moment';
 import commanStyles from '../constants/styles';
 import { useRoute } from '@react-navigation/native';
-import { WebView } from 'react-native-webview';
+// import { WebView } from 'react-native-webview';
 
 export default function ChartView() {
 
@@ -21,10 +21,10 @@ export default function ChartView() {
     <View style={context.styles.container}>
         <Header menu={false} heading={''} subtitle={''} />
         <View style={{height:'100%',width:'100%'}}>
-            <WebView
+            {/* <WebView
                 source={{ uri: route.params.url}}
                 style={{marginTop:-100}}
-            />
+            /> */}
         </View>
     </View>
   )

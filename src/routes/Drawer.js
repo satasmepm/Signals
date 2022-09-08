@@ -30,10 +30,9 @@ const SignOut = () => {
       navigation.navigate('Login');
     });
     removeItemValue();
-<<<<<<< HEAD
-=======
-}
 
+    
+}
 
 
 const removeItemValue = async () => {
@@ -46,22 +45,12 @@ const removeItemValue = async () => {
     // return false;
   }
 
->>>>>>> 76ac281454edc9110a2f21c6b40d9970a321b071
+
+  
 }
 
 
 
-const removeItemValue = async () => {
-  try {
-    await AsyncStorage.removeItem("user");
-    await AsyncStorage.removeItem("user_email");
-    // return true;
-  }
-  catch (exception) {
-    // return false;
-  }
-
-}
 function CustomDrawerContent(props) {
 
 
