@@ -14,6 +14,10 @@ import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import toastConfig from '../components/CustomToast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 81d07ca3fa078d43a9638a9e0f4292702676e5e1
 
 export default function Login() {
 
@@ -97,7 +101,9 @@ export default function Login() {
   const login = (data) => {
     auth()
       .signInWithEmailAndPassword(data.email, data.password)
-      .then(function () { //Auth is successful
+      .then(function () { 
+        
+        //Auth is successful
         Toast.show({
           type: 'default',
           text1: 'Login successfull',
@@ -108,6 +114,8 @@ export default function Login() {
         setTimeout(() => {
           navigation.navigate('MyDrawer')
           }, 2000);
+
+
       })
       .catch(function (error) {
         errorCode = error.code;
@@ -223,15 +231,22 @@ export default function Login() {
             </View>
           }
         />
+<<<<<<< HEAD
         <Text onPress={()=>navigation.navigate('ForgotPassword')} style={styles.forgot_password}>Forgot Password?</Text>
 </View>
+=======
+
+        <Text onPress={()=>navigation.navigate('ForgotPassword')} style={styles.forgot_password}>Forgot Password?</Text>
+
+      </View>
+>>>>>>> 81d07ca3fa078d43a9638a9e0f4292702676e5e1
 
 
       <CustomButton title={'Sign In'} onPress={() => reg()} />
 
       <View style={styles.footer}>
         <Text style={{ fontSize: 13 }}>Don’t have an account? </Text>
-        <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black' }} onPress={() => { }}>Sign Up</Text>
+        <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black' }} onPress={() => {navigation.navigate('Register') }}>Sign Up</Text>
 
       </View>
       <Toast

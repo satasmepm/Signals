@@ -31,6 +31,7 @@
     "react-native-email-link": "^1.14.1",
     "react-native-gesture-handler": "^2.5.0",
     "react-native-image-picker": "^4.10.0",
+    "react-native-linear-gradient": "^2.6.2",
     "react-native-modal-popover": "^2.1.0",
     "react-native-paper": "5.0.0-rc.4",
     "react-native-progress": "^5.0.0",
@@ -41,8 +42,7 @@
     "react-native-sticky-parallax-header": "^0.4.2",
     "react-native-svg": "^13.1.0",
     "react-native-toast-message": "^2.1.5",
-    "react-native-vector-icons": "^9.2.0",
-    "react-native-webview": "^11.23.0"
+    "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

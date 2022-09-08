@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions, StyleSheet, Image } from 'react-native'
 import React, { useContext, useRef, useState } from "react";
 import { TradeContext } from '../context/Context';
 import Feather from 'react-native-vector-icons/Feather';
@@ -9,8 +9,11 @@ import { useNavigation } from '@react-navigation/native';
 import commanStyles from '../constants/styles';
 import * as Progress from 'react-native-progress';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function Home() {
+
+
   const navigation = useNavigation();
   const { width, height } = Dimensions.get('window');
   const context = useContext(TradeContext);
@@ -21,7 +24,7 @@ export default function Home() {
       {/* <Text>Home {context.user}</Text> */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingRight: 15 }}>
         <View width='100%' style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-          <TouchableOpacity onPress={() => { navigation.dispatch(DrawerActions.openDrawer()) }}>
+          <TouchableOpacity onPress={() => { navigation.dispatch(navigation.navigate('Notifications') ) }}>
             <Feather name={'bell'} size={22} color={context.colors.text} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { navigation.dispatch(DrawerActions.openDrawer()) }}>
@@ -37,7 +40,7 @@ export default function Home() {
             </View>
           </View>
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => { navigation.dispatch(DrawerActions.openDrawer()) }}>
+            <TouchableOpacity onPress={() => { }}>
               <Feather name={'help-circle'} size={20} color={context.colors.text} style={{ marginRight: 12 }} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { navigation.dispatch(DrawerActions.openDrawer()) }}>
@@ -78,7 +81,11 @@ export default function Home() {
       </View>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 15 }}>
-        <View style={[commanStyles.plancard, { backgroundColor: context.colors.alphabg, padding: 15, }]}>
+
+        <LinearGradient colors={['transparent', '#E0E0E0']} style={[commanStyles.plancard2, { padding: 15, }]}>
+          <View >      
+            <Image source={require('../../assets/images/bitmexlogo.png')}  size={2}  />
+          </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Sports</Text>
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>5,786,099</Text>
@@ -89,8 +96,11 @@ export default function Home() {
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>7,489,365</Text>
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Longs</Text>
           </View>
-        </View>
-        <View style={[commanStyles.plancard, { backgroundColor: context.colors.alphabg, padding: 15, }]}>
+        </LinearGradient>
+        <LinearGradient colors={['transparent', '#E0E0E0']} style={[commanStyles.plancard2, { padding: 15, }]}>
+          <View >      
+            <Image source={require('../../assets/images/bitmexlogo.png')}  size={2}  />
+          </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Sports</Text>
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>5,786,099</Text>
@@ -101,33 +111,9 @@ export default function Home() {
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>7,489,365</Text>
             <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Longs</Text>
           </View>
-        </View>
-        <View style={[commanStyles.plancard, { backgroundColor: context.colors.alphabg, padding: 15, }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Sports</Text>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>5,786,099</Text>
-          </View>
+        </LinearGradient>
 
-          <Progress.Bar progress={0.6} width={width / 2.75} style={{ borderWidth: 0, color: 'red' }} height={2} unfilledColor={'red'} color={'green'} />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>7,489,365</Text>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Longs</Text>
-          </View>
-        </View>
-        <View style={[commanStyles.plancard, { backgroundColor: context.colors.alphabg, padding: 15, }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Sports</Text>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>5,786,099</Text>
-          </View>
 
-          <Progress.Bar progress={0.6} width={width / 2.75} style={{ borderWidth: 0, color: 'red' }} height={2} unfilledColor={'red'} color={'green'} />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12, color: 'black', fontWeight: 'bold' }]}>7,489,365</Text>
-            <Text style={[context.styles.text, { textAlign: 'left', fontSize: 12 }]}>Longs</Text>
-          </View>
-        </View>
-
-      
       </View>
     </View>
   )

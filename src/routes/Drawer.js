@@ -31,8 +31,12 @@ const SignOut = () => {
       navigation.navigate('Login');
     });
     removeItemValue();
+<<<<<<< HEAD
   }
+=======
 
+    
+}
 
 
 const removeItemValue = async () => {
@@ -45,7 +49,13 @@ const removeItemValue = async () => {
     // return false;
   }
 
+
+  
 }
+>>>>>>> 81d07ca3fa078d43a9638a9e0f4292702676e5e1
+
+
+
 function CustomDrawerContent(props) {
 
 
