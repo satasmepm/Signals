@@ -41,7 +41,7 @@ export default function Spots() {
     .orderBy('id', 'asc')
     .get()
     .then(querySnapshot => {
-      console.log('Total Signal Types: ', querySnapshot.size);
+      // console.log('Total Signal Types: ', querySnapshot.size);
       setCount(querySnapshot.size)
       querySnapshot.forEach(documentSnapshot => {
         arr.push(documentSnapshot.data())
@@ -56,7 +56,7 @@ export default function Spots() {
     .orderBy('id', 'asc')
     .get()
     .then(querySnapshot => {
-      console.log('Total Signal Types: ', querySnapshot.size);
+      // console.log('????????????????? ', querySnapshot.size);
   
       querySnapshot.forEach(documentSnapshot => {
         arr2.push(documentSnapshot.data())
@@ -147,9 +147,9 @@ export default function Spots() {
                               <Text style={commanStyles.dates}>{moment(new Date(spot.time.seconds * 1000)).format("MMM DD | hh:mm:ssA")}</Text>
                         </View>
                         <View style={[commanStyles.spaceBetweenRow,{marginTop:5}]}>
-                          <View style={commanStyles.risk}>
+                          {/* <View style={commanStyles.risk}>
                             <Text style={commanStyles.risktext}>{spot.risk} Risk</Text>
-                          </View>
+                          </View> */}
                           <View style={commanStyles.hold}>
                             <Text style={commanStyles.whiteText}>Hold {spot.hold}</Text>
                           </View>

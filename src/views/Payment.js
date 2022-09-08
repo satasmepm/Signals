@@ -32,6 +32,12 @@ export default function Payment() {
     const [modalVisible, setModalVisible] = useState(true);
     const [wallets, setWallets] = useState(null);
     const [response, setResponse] = React.useState(null);
+
+    
+    const [plan, setPlan] = useState(0);
+    const [type, setType] = useState('');
+    const [spot, setSpot] = useState(null);
+    const [future, setFuture] = useState(null);
     
     const [user, setUser] = useState(null);
 
@@ -125,17 +131,41 @@ export default function Payment() {
       ImagePicker.launchImageLibrary(options, setResponse);
     
   }, []);
+  // const uploadImage = async () =>{
+  //   var suffix = Date.now();
+  //   var preffix = context.user
+  //   if(response!=null){
+  //   var filetype = response.assets[0]['type'].split('/')[1]
+  //   const reference = storage().ref(preffix+suffix+'.'+filetype);
+  //     console.log(preffix+suffix+'.'+filetype)
+  //       // path to existing file on filesystem
+  //       const pathToFile = response.assets[0]['uri'];
+  //       // uploads file
+  //       await reference.putFile(pathToFile);
+  //       Toast.show({
+  //         type: 'default',
+  //         text1: "Done!",
+  //         props: { err:false ,colors:context.colors}
+  //       });
+  //       addUserBuyPlan(1)
+  //   }
+  // }
   const uploadImage = async () =>{
     var suffix = Date.now();
     var preffix = context.user
     if(response!=null){
     var filetype = response.assets[0]['type'].split('/')[1]
-    const reference = storage().ref(preffix+suffix+'.'+filetype);
-      console.log(preffix+suffix+'.'+filetype)
+    var filename =preffix+suffix+'.'+filetype
+
+    const reference = storage().ref(filename);
+      // console.log(preffix+suffix+'.'+filetype)
         // path to existing file on filesystem
         const pathToFile = response.assets[0]['uri'];
         // uploads file
         await reference.putFile(pathToFile);
+        const url = await reference.getDownloadURL();
+        // console.log('>>>>>>>>>>'+url)
+        updateReciept(url)
         Toast.show({
           type: 'default',
           text1: "Done!",
@@ -180,12 +210,13 @@ export default function Payment() {
           user: context.user,
           signaltype: user.package,
           spotplan:route.params.plan.id,
-          paid:uploaded,
+          spotPaid:uploaded,
           accepted:0,
           time:moment(new Date()).format("YYYY-MM-DD hh:mm:ssA")
         } 
         updatedata={
           spotplan:route.params.plan.id,
+          spotPaid:uploaded,
         }
       }
       else{
@@ -193,12 +224,13 @@ export default function Payment() {
           user: context.user,
           signaltype: user.package,
           futureplan:route.params.plan.id,
-          paid:uploaded,
+          futurePaid:uploaded,
           accepted:0,
           time:moment(new Date()).format("YYYY-MM-DD hh:mm:ssA")
         } 
         updatedata={
           futureplan:route.params.plan.id,
+          futurePaid:uploaded,
         }
       }
 
@@ -232,6 +264,45 @@ export default function Payment() {
         });
 
 
+  }
+
+  const updateReciept = (image)=>{
+    var type = route.params.pkg==1?'spot':'future'
+    firestore()
+      .collection('Reciepts')
+      .add({
+        user:context.user,
+        plan: route.params.plan.id,
+        recieptImage: image,
+        signalType:type
+      })
+      .then(() => {
+        console.log('reciept added!');
+      });
+  
+    if(type=='spot'){
+      firestore()
+      .collection('UserBuyPlans')
+      .doc(context.user)
+      .update({
+        spotPaid: 1,
+      })
+      .then(() => {
+        console.log('updated!');
+      });
+    }
+    else if(type=='future'){
+      firestore()
+      .collection('UserBuyPlans')
+      .doc(context.user)
+      .update({
+        futurePaid: 1,
+      })
+      .then(() => {
+        console.log('updated!');
+      });
+    }
+    // refRBSheet.current.close()
   }
 
   return (

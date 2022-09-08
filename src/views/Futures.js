@@ -20,7 +20,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function Spots() {
+export default function Futures() {
   const context = useContext(TradeContext);
   const [plans, setPlans] = useState(null);
   const [futures, setFutures] = useState(null);
@@ -103,11 +103,11 @@ export default function Spots() {
                               <Text style={commanStyles.dates}>{moment(new Date(future.time.seconds * 1000)).format("MMM DD | hh:mm:ssA")}</Text>
                         </View>
                         <View style={[commanStyles.spaceBetweenRow,{marginTop:5}]}>
-                          <View style={commanStyles.risk}>
+                          {/* <View style={commanStyles.risk}>
                             <Text style={commanStyles.risktext}>{future.risk} Risk</Text>
-                          </View>
+                          </View> */}
                           <View style={commanStyles.hold}>
-                            <Text style={commanStyles.whiteText}>Hold {future.hold}</Text>
+                            <Text style={commanStyles.whiteText}>Laverage x{future.laverage}</Text>
                           </View>
                           <View style={commanStyles.stops}>
                             <Text style={commanStyles.whiteText}>Stop {future.stop}</Text>

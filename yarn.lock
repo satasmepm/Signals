@@ -1406,6 +1406,15 @@
   resolved "https://registry.npmjs.org/@react-native/polyfills/-/polyfills-2.0.0.tgz"
   integrity sha512-K0aGNn1TjalKj+65D7ycc1//H9roAQ51GJVk5ZJQFb2teECGmzd86bYDC0aYdbRf7gtovescq4Zt6FR0tgXiHQ==
 
+"@react-navigation/bottom-tabs@^6.3.3":
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-6.3.3.tgz#ded46ffa47c48f95d87a77e35cbed73eda3378b2"
+  integrity sha512-S5obigsDAgRD7hmGauijNITI2jPm7N40IIIwdQjJhT9Y9vos8ycLOKMVU06mchU6sRGJC2xIkPderPiwAUVvDg==
+  dependencies:
+    "@react-navigation/elements" "^1.3.5"
+    color "^4.2.3"
+    warn-once "^0.1.0"
+
 "@react-navigation/core@^6.2.2":
   version "6.2.2"
   resolved "https://registry.npmjs.org/@react-navigation/core/-/core-6.2.2.tgz"
@@ -1430,6 +1439,11 @@
   version "1.3.4"
   resolved "https://registry.npmjs.org/@react-navigation/elements/-/elements-1.3.4.tgz"
   integrity sha512-O0jICpjn3jskVo4yiWzZozmj7DZy1ZBbn3O7dbenuUjZSj/cscjwaapmZZFGcI/IMmjmx8UTKsybhCFEIbGf3g==
+
+"@react-navigation/elements@^1.3.5":
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.5.tgz#904876ce3f3c36632f242322dd622bb3e18e6775"
+  integrity sha512-3Ef5cYuQXqJRco7RG99fkDEciAuYTkAD7go5D8RFYG8rAp2aI/cDnGwFwvFVANlRsbFFPGU3ZLY8EUJihf4Hjw==
 
 "@react-navigation/material-bottom-tabs@^6.2.2":
   version "6.2.2"
@@ -6016,14 +6030,13 @@ react-native-screens@^3.15.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-<<<<<<< HEAD
 react-native-sticky-parallax-header@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-native-sticky-parallax-header/-/react-native-sticky-parallax-header-0.4.2.tgz#4fad236553bd7cf1b3fadc07c1d0af921cf2415f"
   integrity sha512-fcS2jvid2PLNNP8JkHEsA4sdp9uUr+y82rkB9VcnQCqpS6baUzP8PnEsy4L9j7mqCpu6/AlpA77RpiC9WLvFJg==
   dependencies:
     prop-types "^15.7.2"
-=======
+
 react-native-svg@^13.1.0:
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-13.1.0.tgz#2bad1dbee4c093af4abf45b356571715ae5f1c17"
@@ -6031,7 +6044,6 @@ react-native-svg@^13.1.0:
   dependencies:
     css-select "^5.1.0"
     css-tree "^1.1.3"
->>>>>>> 76ac281454edc9110a2f21c6b40d9970a321b071
 
 react-native-toast-message@^2.1.5:
   version "2.1.5"

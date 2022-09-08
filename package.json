@@ -18,6 +18,7 @@
     "@react-native-firebase/messaging": "^15.4.0",
     "@react-native-firebase/storage": "^15.4.0",
     "@react-native-masked-view/masked-view": "^0.2.7",
+    "@react-navigation/bottom-tabs": "^6.3.3",
     "@react-navigation/drawer": "^6.4.3",
     "@react-navigation/material-bottom-tabs": "^6.2.2",
     "@react-navigation/native": "^6.0.11",
@@ -37,11 +38,8 @@
     "react-native-reanimated": "^2.9.1",
     "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.15.0",
-<<<<<<< HEAD
     "react-native-sticky-parallax-header": "^0.4.2",
-=======
     "react-native-svg": "^13.1.0",
->>>>>>> 76ac281454edc9110a2f21c6b40d9970a321b071
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.2.0",
     "react-native-webview": "^11.23.0"

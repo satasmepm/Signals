@@ -143,7 +143,10 @@ const commanStyles = StyleSheet.create({
         padding:10,
         borderRadius:10,
         marginBottom:5,
-        elevation:3
+        elevation:3,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between'
       }
 })
 

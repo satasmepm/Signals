@@ -23,6 +23,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import RBSheet from "react-native-raw-bottom-sheet";
 import CollapsHeader from '../components/CollapsHeader';
 import { useNavigation , DrawerActions } from '@react-navigation/native';
+import storage from '@react-native-firebase/storage';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -32,10 +33,15 @@ export default function Profile() {
     const refRBSheet = useRef();
     const headerRef = useRef();
     const [response, setResponse] = React.useState(null);
-    const [plan, setPlan] = useState(null);
+    const [plan, setPlan] = useState(0);
+    const [type, setType] = useState('');
     const [user, setUser] = useState(null);
     const [spot, setSpot] = useState(null);
     const [future, setFuture] = useState(null);
+    const [key, setKey] = useState(0);
+
+    const [futurepaid, setFuturepaid] = useState(false);
+    const [spotpaid, setSpotpaid] = useState(false);
 
     const scroll = useRef(new Animated.Value(0)).current;
 
@@ -94,12 +100,18 @@ export default function Profile() {
         var preffix = context.user
         if(response!=null){
         var filetype = response.assets[0]['type'].split('/')[1]
-        const reference = storage().ref(preffix+suffix+'.'+filetype);
-          console.log(preffix+suffix+'.'+filetype)
+        var filename =preffix+suffix+'.'+filetype
+
+        const reference = storage().ref(filename);
+          // console.log(preffix+suffix+'.'+filetype)
             // path to existing file on filesystem
             const pathToFile = response.assets[0]['uri'];
             // uploads file
             await reference.putFile(pathToFile);
+            
+            const url = await reference.getDownloadURL();
+
+            updateReciept(plan,url,type)
             Toast.show({
               type: 'default',
               text1: "Done!",
@@ -107,6 +119,48 @@ export default function Profile() {
             });
         }
       }
+
+      const updateReciept = (plan,image,type)=>{
+        firestore()
+          .collection('Reciepts')
+          .add({
+            plan: plan,
+            recieptImage: image,
+            signalType:type
+          })
+          .then(() => {
+            console.log('reciept added!');
+          });
+      
+        if(type=='spot'){
+          firestore()
+          .collection('UserBuyPlans')
+          .doc(context.user)
+          .update({
+            spotPaid: 1,
+          })
+          .then(() => {
+            console.log('updated!');
+          });
+        }
+        else if(type=='future'){
+          firestore()
+          .collection('UserBuyPlans')
+          .doc(context.user)
+          .update({
+            futurePaid: 1,
+          })
+          .then(() => {
+            console.log('updated!');
+          });
+        }
+        setKey(key+1)
+        refRBSheet.current.close()
+        getSpotPlansList(user)
+        getFuturePlansList(user)
+      }
+
+
       const renderForeground = () => {
 
         const titleOpacity = scroll.interpolate({
@@ -123,7 +177,7 @@ export default function Profile() {
                 <Image source={require('../../assets/images/profile.png')} style={{width:60,height: 60,borderRadius:50,marginTop:2.5,zIndex:5}} />
                 <View style={{borderRadius:50,width:65,height:65,position: 'absolute',top:0,backgroundColor:context.colors.alphabg}} />
               {/* <View> */}
-              <Text style={{fontSize:17,color:context.colors.text,marginTop:5}}>{context.user}</Text>
+              <Text style={{fontSize:22,color:context.colors.text,marginTop:5}}>{user==null?'':user.username}</Text>
 
             </Animated.View>
           </View>
@@ -142,7 +196,7 @@ export default function Profile() {
             <Animated.View style={{ opacity ,flexDirection:'row',alignItems:'center',padding:10,justifyContent:'space-between'}}>
               <View style={{flexDirection:'row',alignContent:'center'}}> 
               <Image source={require('../../assets/images/profile.png')} style={{width:25,height: 25,borderRadius:50,marginLeft:10,}} />
-                <Text style={{paddingLeft:10,fontSize:17,backgroundColor:context.colors.primary,color:context.colors.text}}>{context.user}</Text>
+                <Text style={{paddingLeft:10,fontSize:17,backgroundColor:context.colors.primary,color:context.colors.text}}>{user==null?'':user.username}</Text>
               </View>    
               <TouchableOpacity onPress={()=>{navigation.dispatch(DrawerActions.openDrawer())}}>
                 <Feather name={'menu'} size={25} color={context.colors.text} />
@@ -154,8 +208,6 @@ export default function Profile() {
 
 
       useEffect(() => {
-        var arr =[]
-        var arr2 =[]
         firestore()
         .collection('Users')
         .doc(context.user)
@@ -164,78 +216,110 @@ export default function Profile() {
           console.log('User exists: ', documentSnapshot.exists);
 
           if(documentSnapshot.exists){
+
             var data= documentSnapshot.data()
             setUser(documentSnapshot.data())
+
             if(data.package==1)   {
-              firestore()
-                .collection('Plans')
-                // Filter results
-                .where('id', '==', data.spotPlan)
-                .get()
-                .then(querySnapshot => {
-                  /* ... */
-                  querySnapshot.forEach(documentSnapshot => {
-                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-                    arr.push(documentSnapshot.data())
-                  });
-                  setSpot(arr)
-                  // console.log(querySnapshot.data())
-                });
+              getSpotPlansList(data)
             }  
             
             if(data.package==2)   {
-              firestore()
-                .collection('FuturePlans')
-                // Filter results
-                .where('id', '==', data.futurePlan)
-                .get()
-                .then(querySnapshot => {
-                  /* ... */
-                  querySnapshot.forEach(documentSnapshot => {
-                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-                    arr2.push(documentSnapshot.data())
-                  });
-                  setFuture(arr2)
-                  // console.log(querySnapshot.data())
-                });
+              getFuturePlansList(data)
             }
             if(data.package==3)   {
-              firestore()
-                .collection('FuturePlans')
-                // Filter results
-                .where('id', '==', data.futurePlan)
-                .get()
-                .then(querySnapshot => {
-                  /* ... */
-                  querySnapshot.forEach(documentSnapshot => {
-                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-                    arr2.push(documentSnapshot.data())
-                  });
-                  setFuture(arr2)
-                  // console.log(querySnapshot.data())
-                });
-
-                firestore()
-                .collection('Plans')
-                // Filter results
-                .where('id', '==', data.spotPlan)
-                .get()
-                .then(querySnapshot => {
-                  /* ... */
-                  querySnapshot.forEach(documentSnapshot => {
-                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-                    arr.push(documentSnapshot.data())
-                  });
-                  setSpot(arr)
-                  // console.log(querySnapshot.data())
-                });
+              getFuturePlansList(data)
+              getSpotPlansList(data)
             }
-            
-            
           }
         });
+
+
+
       }, []);
 
+      const getSpotPlansList =(data)=>{
+        var arr =[]
+        firestore()
+        .collection('Plans')
+        // Filter results
+        .where('id', '==', data.spotPlan)
+        .get()
+        .then(querySnapshot => {
+          /* ... */
+          querySnapshot.forEach(documentSnapshot => {
+            console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+            arr.push(documentSnapshot.data())
+          });
+          setSpot(arr)
+          getSpotBuyPlans()
+
+
+          // console.log(querySnapshot.data())
+        });
+
+      }
+
+      const getFuturePlansList = (data) =>{
+        var arr2 =[]
+        firestore()
+          .collection('FuturePlans')
+          // Filter results
+          .where('id', '==', data.futurePlan)
+          .get()
+          .then(querySnapshot => {
+            /* ... */
+            querySnapshot.forEach(documentSnapshot => {
+              console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+              arr2.push(documentSnapshot.data())
+            });
+            setFuture(arr2)
+            getFutureBuyPlans()
+            // console.log(querySnapshot.data())
+          });
+
+      }
+      const getSpotBuyPlans = () =>{
+        firestore()
+        .collection('UserBuyPlans')
+        .doc(context.user)
+        .get()
+        .then(documentSnapshot => {                
+          if (documentSnapshot.exists) {
+            console.log('<<<<<<<>>>>>>> ', documentSnapshot.data());
+            var data = documentSnapshot.data()
+
+            if(data.spotPaid == 0){
+              setSpotpaid(false)
+            }
+            else{
+              setSpotpaid(true)
+            }
+          }
+        });
+      }
+
+      const getFutureBuyPlans =()=>{
+
+        firestore()
+        .collection('UserBuyPlans')
+        .doc(context.user)
+        .get()
+        .then(documentSnapshot => {                
+          if (documentSnapshot.exists) {
+            console.log('<<<<<<<>>>>>>> ', documentSnapshot.data());
+            var data = documentSnapshot.data()
+
+            if(data.futurePaid == 0){
+              setFuturepaid(false)
+            }
+            else{
+              setFuturepaid(true)
+            }
+          }
+        });
+
+      }
 
   return (
     <View style={[context.styles.container,{paddingTop:0}]}>
@@ -250,7 +334,7 @@ export default function Profile() {
         header={renderHeader()}
         parallaxHeight={10}
         image={null}
-        headerHeight={50}
+        headerHeight={45}
         headerSize={() => {}}
         onEndReached={() => {}}
         scrollEvent={Animated.event([{ nativeEvent: { contentOffset: { y: scroll } } }])}
@@ -259,40 +343,76 @@ export default function Profile() {
         // image={image}
         rightTopIcon={null}
       >
-            <View style={{marginTop:80,padding:10}}>
+            <View style={{marginTop:90}} key={key}>
+                <View style={{flexDirection:'row',alignItems:'center',borderTopWidth:0.7,borderBottomWidth:0.7,paddingVertical:10,justifyContent:'center',marginBottom:5,borderColor:context.colors.alphabg2,width:windowWidth-20,marginLeft:10}}>
+                  <Feather name={'mail'} size={16} color={context.colors.alphabg2} />
+                  <Text style={{color:context.colors.alphabg2,fontSize:15}}> {user==null?'':user.email}</Text>
+                </View>
+              <Text style={{fontSize:17,color:context.colors.text,marginLeft:10}}>https://api.binance.com/api/v3/ticker/price?symbol=ENSUSDT</Text>
               {
                 user==null?
                 null
                 :
                 user.package==1?
-                spot==null?
-                      null
-                      :
-              <View style={{width:'100%',backgroundColor:context.colors.alphabg}}>
-                  <Text>{spot[0].price}</Text>
-                  <Text>ttt</Text>
-                  <Text>ttt</Text>
-              </View>
-              :
-              user.package==2?
-              future==null?
-                      null
-                      :
-              <View style={{width:'100%',backgroundColor:context.colors.alphabg}}>
-                  <Text>{future[0].price}</Text>
-                  <Text>ttt</Text>
-                  <Text>ttt</Text>
-              </View>
-              :
-              user.package==3?
-              <View style={{width:'100%'}}>
+                <View style={{width:windowWidth-20,margin:10}}>
                   {
                     spot==null?
                       null
                       :
                     <Animatable.View animation={'flipInY'} style={[commanStyles.profilecard,{backgroundColor:context.colors.card}]}>
-                      <Text style={{color:context.colors.text,fontSize:18}}>Spot Plan</Text>
-                      <Text style={{color:context.colors.text}}>{spot[0].title}</Text>
+                      <View>
+                        <Text style={{color:context.colors.text,fontSize:18}}>Spot Plan</Text>
+                        <Text style={{color:context.colors.text}}>{spot[0].title}</Text>
+                      </View>
+                      {
+                        spotpaid?
+                        null:
+                        <CustomButton title={'Pay for Package'} onPress={()=>{setResponse(null);refRBSheet.current.open();setPlan(spot[0].id);setType('spot')}}/>
+
+                      }
+                    </Animatable.View>         
+                  }
+              </View> 
+              :
+              user.package==2?
+              <View style={{width:windowWidth-20,margin:10}}>
+
+                  {
+                    future==null?
+                    null
+                    :
+                    <Animatable.View animation={'flipInY'} style={[commanStyles.profilecard,{backgroundColor:context.colors.card}]}>
+                      <View>
+                        <Text style={{color:context.colors.text,fontSize:18}}>Future Plan</Text>
+                        <Text style={{color:context.colors.text}}>{future[0].title}</Text>
+                      </View>
+                      {
+                        futurepaid?
+                        null:
+                        <CustomButton title={'Pay for Package'} onPress={()=>{setResponse(null);refRBSheet.current.open();setPlan(future[0].id);setType('future')}}/>
+
+                      }
+                    </Animatable.View>
+                  }
+              </View> 
+              :
+              user.package==3?
+              <View style={{width:windowWidth-20,margin:10}}>
+                  {
+                    spot==null?
+                      null
+                      :
+                    <Animatable.View animation={'flipInY'} style={[commanStyles.profilecard,{backgroundColor:context.colors.card}]}>
+                      <View>
+                        <Text style={{color:context.colors.text,fontSize:18}}>Spot Plan</Text>
+                        <Text style={{color:context.colors.text}}>{spot[0].title}</Text>
+                      </View>
+                      {
+                        spotpaid?
+                        null:
+                        <CustomButton title={'Pay for Package'} onPress={()=>{setResponse(null);refRBSheet.current.open();setPlan(spot[0].id);setType('spot')}}/>
+
+                      }
                     </Animatable.View>         
                   }
 
@@ -301,8 +421,16 @@ export default function Profile() {
                     null
                     :
                     <Animatable.View animation={'flipInY'} style={[commanStyles.profilecard,{backgroundColor:context.colors.card}]}>
-                      <Text style={{color:context.colors.text,fontSize:18}}>Future Plan</Text>
-                      <Text style={{color:context.colors.text}}>{future[0].title}</Text>
+                      <View>
+                        <Text style={{color:context.colors.text,fontSize:18}}>Future Plan</Text>
+                        <Text style={{color:context.colors.text}}>{future[0].title}</Text>
+                      </View>
+                      {
+                        futurepaid?
+                        null:
+                        <CustomButton title={'Pay for Package'} onPress={()=>{setResponse(null);refRBSheet.current.open();setPlan(future[0].id);setType('future')}}/>
+
+                      }
                     </Animatable.View>
                   }
 
@@ -311,53 +439,11 @@ export default function Profile() {
               :
               null             
               }
+              
             </View>
 
       </StickyParallaxHeader>
-
-
-        {/* <CollapsHeader menu={true} heading={'User Profile'} subtitle={''} >
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-          <Text>ggg</Text>
-        </CollapsHeader> */}
-        <CustomButton title={'Pay for Package'} onPress={()=>refRBSheet.current.open()}/>
+      
         <RBSheet
                     ref={refRBSheet}
                     closeOnDragDown={true}

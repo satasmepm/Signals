@@ -18,6 +18,7 @@ import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useNavigation } from '@react-navigation/native';
+import Tabs from "./Tabs";
 
 const SignOut = () => {
 
@@ -30,24 +31,7 @@ const SignOut = () => {
       navigation.navigate('Login');
     });
     removeItemValue();
-<<<<<<< HEAD
-=======
-}
-
-
-
-const removeItemValue = async () => {
-  try {
-    await AsyncStorage.removeItem("user");
-    await AsyncStorage.removeItem("user_email");
-    // return true;
   }
-  catch (exception) {
-    // return false;
-  }
-
->>>>>>> 76ac281454edc9110a2f21c6b40d9970a321b071
-}
 
 
 
@@ -100,12 +84,15 @@ function MyDrawer() {
         headerShown: false,
         drawerPosition: 'right',
         drawerActiveTintColor: context.colors.text,
-        drawerInactiveTintColor: context.colors.text
-      }} >
+        drawerInactiveTintColor: context.colors.text,
+        
+      }} 
+      
+      >
 
       <Drawer.Screen
         name="HomeTabs"
-        component={MyTabs}
+        component={Tabs}
         options={{
           drawerLabel: 'Home',
           drawerIcon: () => <Feather name={'home'} size={20} color={context.colors.text} />
@@ -125,8 +112,10 @@ function MyDrawer() {
         name="Profile"
         component={Profile}
         options={{
+          unmountOnBlur:true,
           drawerLabel: 'Profile',
-          drawerIcon: () => <Feather name={'user'} size={20} color={context.colors.text} />
+          drawerIcon: () => <Feather name={'user'} size={20} color={context.colors.text} 
+          />
         }}
       />
 
