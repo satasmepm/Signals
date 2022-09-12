@@ -348,7 +348,7 @@ export default function Profile() {
                   <Feather name={'mail'} size={16} color={context.colors.alphabg2} />
                   <Text style={{color:context.colors.alphabg2,fontSize:15}}> {user==null?'':user.email}</Text>
                 </View>
-              <Text style={{fontSize:17,color:context.colors.text,marginLeft:10}}>https://api.binance.com/api/v3/ticker/price?symbol=ENSUSDT</Text>
+              {/* <Text style={{fontSize:17,color:context.colors.text,marginLeft:10}}></Text> */}
               {
                 user==null?
                 null

@@ -43,8 +43,16 @@ export default function Spots() {
     .then(querySnapshot => {
       // console.log('Total Signal Types: ', querySnapshot.size);
       setCount(querySnapshot.size)
-      querySnapshot.forEach(documentSnapshot => {
+      querySnapshot.forEach((documentSnapshot,index) => {
         arr.push(documentSnapshot.data())
+
+        var data = documentSnapshot.data()
+        fetch('https://api.binance.com/api/v3/ticker/price?symbol='+data.coin)
+        .then((response) => response.json())
+        .then((json) => {
+          arr[index]['current'] = parseFloat(json.price).toFixed(3)
+          // conso le.log(arr[0]['current'])
+        }) 
         // console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
       });
       setspots(arr)
@@ -161,7 +169,7 @@ export default function Spots() {
                     </View>
                     <View style={[commanStyles.spaceBetweenRow,{backgroundColor:context.colors.alphabg,marginTop:3}]}>
                       <Text style={[commanStyles.target,{color:context.colors.text}]}>Current Price </Text>
-                      <Text style={[commanStyles.target,{color:context.colors.text}]}>{spot.target1}</Text>
+                      <Text style={[commanStyles.target,{color:context.colors.text}]}>{spot.current}</Text>
                       <Feather name={'chevron-down'} size={15} color={context.colors.text} />
                     </View>
 

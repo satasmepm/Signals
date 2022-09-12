@@ -143,14 +143,10 @@ const commanStyles = StyleSheet.create({
         padding:10,
         borderRadius:10,
         marginBottom:5,
-<<<<<<< HEAD
         elevation:3,
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between'
-      }
-=======
-        elevation:3
       },
       ////////////////////////////////////////// chamil/////////////////
       linearGradient: {
@@ -166,19 +162,9 @@ const commanStyles = StyleSheet.create({
         borderRadius:7,
         borderWidth:0.3,
         borderColor:"grey"
-      },
-      buttonText: {
-        fontSize: 18,
-        fontFamily: 'Gill Sans',
-        textAlign: 'center',
-        margin: 10,
-        color: '#ffffff',
-
-        
-      },
+      }
       
     
->>>>>>> 81d07ca3fa078d43a9638a9e0f4292702676e5e1
 })
 
 export default commanStyles;

@@ -14,10 +14,6 @@ import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import toastConfig from '../components/CustomToast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-<<<<<<< HEAD
-=======
-
->>>>>>> 81d07ca3fa078d43a9638a9e0f4292702676e5e1
 
 export default function Login() {
 
@@ -231,15 +227,10 @@ export default function Login() {
             </View>
           }
         />
-<<<<<<< HEAD
-        <Text onPress={()=>navigation.navigate('ForgotPassword')} style={styles.forgot_password}>Forgot Password?</Text>
-</View>
-=======
 
         <Text onPress={()=>navigation.navigate('ForgotPassword')} style={styles.forgot_password}>Forgot Password?</Text>
 
       </View>
->>>>>>> 81d07ca3fa078d43a9638a9e0f4292702676e5e1
 
 
       <CustomButton title={'Sign In'} onPress={() => reg()} />

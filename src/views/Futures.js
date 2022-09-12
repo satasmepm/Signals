@@ -42,11 +42,21 @@ export default function Futures() {
     .then(querySnapshot => {
       console.log('Total Signal Types: ', querySnapshot.size);
       setCount(querySnapshot.size)
-      querySnapshot.forEach(documentSnapshot => {
+      querySnapshot.forEach((documentSnapshot,index) => {
         arr.push(documentSnapshot.data())
         // console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+        var data = documentSnapshot.data()
+        fetch('https://api.binance.com/api/v3/ticker/price?symbol='+data.coin)
+        .then((response) => response.json())
+        .then((json) => {
+          arr[index]['current'] = parseFloat(json.price).toFixed(3)
+          // conso le.log(arr[0]['current'])
+        })    
+
+
       });
       setFutures(arr)
+      // console.log(arr)
     });
 
     var arr2 =[]
@@ -80,6 +90,17 @@ export default function Futures() {
         justifyContent:'space-between'
     }
   })
+
+  const _retrieveData=(coin,index)=>{
+    var data={}
+    fetch('https://api.binance.com/api/v3/ticker/price?symbol='+coin)
+    .then((response) => response.json())
+    .then((json) => {
+      data =json
+    })    
+    .catch((error) => console.error(error))   
+    
+  }
 
   return (
     <View style={[context.styles.leftalignedcontainer,{paddingTop:120}]}>
@@ -116,8 +137,8 @@ export default function Futures() {
                       </View>
                     </View>
                     <View style={[commanStyles.spaceBetweenRow,{backgroundColor:context.colors.alphabg,marginTop:3}]}>
-                      <Text style={[commanStyles.target,{color:context.colors.text}]}>Current Price </Text>
-                      <Text style={[commanStyles.target,{color:context.colors.text}]}>{future.target1}</Text>
+                      <Text style={[commanStyles.target,{color:context.colors.text}]}>Mark Price </Text>
+                      <Text style={[commanStyles.target,{color:context.colors.text}]}>{future.current}</Text>
                       <Feather name={'chevron-down'} size={15} color={context.colors.text} />
                     </View>
 
