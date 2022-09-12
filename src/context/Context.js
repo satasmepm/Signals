@@ -26,6 +26,11 @@ export const TradeProvider = ({ children }) => {
 
     const getuser= async () => {
       try {
+        
+        const jsonValue = await AsyncStorage.getItem('theme')
+        jsonValue != null ? setColors(JSON.parse(jsonValue)) : null;
+
+
         const value = await AsyncStorage.getItem('user')
         if(value !== null) {
           setUser(value)
@@ -36,6 +41,8 @@ export const TradeProvider = ({ children }) => {
           setPack(pkg)
           // value previously stored
         }
+
+
       } catch(e) {
         // error reading value
       }
@@ -80,6 +87,16 @@ export const TradeProvider = ({ children }) => {
                 card:'#FFFFFF',
                 toast:'#292929'
             })
+            storeTheme({
+              primary:"white",
+              text:"black",
+              headingtext:"#1B0A30",
+              alphabg:"rgba(0,0,0,0.1)",
+              alphabg2:"rgba(0,0,0,0.5)",
+              textinputtitle:'#160032',
+              card:'#FFFFFF',
+              toast:'#292929'
+          })
         }
         else if(color=="dark"){
             setColors({
@@ -92,7 +109,25 @@ export const TradeProvider = ({ children }) => {
                 card:'#292929',
                 toast:'#E0E0E0'
             })
+            storeTheme({
+                primary:"#1E1E1E",
+                text:"rgba(255,255,255,0.8)",
+                headingtext:"white",
+                alphabg:"rgba(255,255,255,0.1)",
+                alphabg2:"rgba(255,255,255,0.5)",
+                textinputtitle:'#fff',
+                card:'#292929',
+                toast:'#E0E0E0'
+            })
         }
+  }
+  const storeTheme = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('theme', jsonValue)
+    } catch (e) {
+      // saving error
+    }
   }
 
   const styles = StyleSheet.create({
@@ -156,7 +191,7 @@ export const TradeProvider = ({ children }) => {
         styles
       }}
     >
-      <StatusBar barStyle={theme=="Dark"?"light-content":"dark-content"} backgroundColor={colors.primary}/>
+      <StatusBar barStyle={colors.primary=="#1E1E1E"?"light-content":"dark-content"} backgroundColor={colors.primary}/>
       {children}
     </TradeContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { View, Text,StyleSheet, TouchableOpacity , StatusBar, Modal } from 'react-native'
-import React, { useContext, useRef, useState  } from "react";
+import React, { useContext, useRef, useState , useEffect } from "react";
 import { TradeContext } from '../context/Context';
 import commanStyles from '../constants/styles';
 import List from '../components/List';
@@ -42,16 +42,26 @@ export default function Settings() {
             setIconName('moon')
             setTheme('Dark')            
         }
-        else{
-            setIconName('settings')
-            setTheme('System')               
-        }
+        // else{
+        //     setIconName('settings')
+        //     setTheme('System')               
+        // }
         refRBSheet.current.close()
     }
+    useEffect(() => {   
+    
+        if(context.colors.primary == '#1E1E1E'){
+            setTheme('Dark')
+        }
+        else{
+            setTheme('Light')
+        }
+    
+      }, []);
+
   return (
     <View style={context.styles.leftalignedcontainer}>
 
-        <StatusBar backgroundColor={context.colors.primary} barStyle={theme=="Dark"?"light-content":"dark-content"}/>
         <Header menu={true} heading={'Settings'} />
       
         {/* <Text style={context.styles.smallHeading}>Settings</Text> */}
@@ -102,12 +112,12 @@ export default function Settings() {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity  onPress={()=>{toggleTheme('System')}}>
+                {/* <TouchableOpacity  onPress={()=>{toggleTheme('System')}}>
                 <View style={commanStyles.row}>
                         <Feather name={'settings'} size={25} color="#D18A00" />
                         <Text style={context.styles.text}>  System</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 </View>
                 <View style={{alignItems:'flex-end'}}>
                     <TouchableOpacity style={commanStyles.buttonPrimary} onPress={()=>{refRBSheet.current.close()}}>

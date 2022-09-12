@@ -22,8 +22,11 @@ function Tabs() {
             headerShown:false,
             tabBarActiveTintColor:context.colors.text,
             tabBarInactiveTintColor:context.colors.alphabg2,            
-            tabBarStyle:{paddingVertical:5,backgroundColor:context.colors.card,borderTopColor:context.colors.alphabg,paddingBottom:7}
+            tabBarStyle:{paddingVertical:5,backgroundColor:context.colors.card,borderTopColor:context.colors.alphabg,paddingBottom:7},
+            
         }}
+        
+        
     >
             <Tab.Screen 
       name="Home" 
@@ -48,6 +51,7 @@ function Tabs() {
         tabBarIcon: ({ color }) => (
           <Entypo name="flash" color={color} size={20} />
         ),
+        unmountOnBlur:true
       }}/>
       :
   context.pack==2 ?
@@ -58,6 +62,7 @@ function Tabs() {
         tabBarIcon: ({ color }) => (
           <FontAwesome name="file-text" color={color} size={17} />
         ),
+        unmountOnBlur:true
       }}/>
 
       :
@@ -70,6 +75,7 @@ function Tabs() {
         tabBarIcon: ({ color }) => (
           <Entypo name="flash" color={color} size={20} />
         ),
+        unmountOnBlur:true
       }}/>
       <Tab.Screen name="Futures" component={Futures} 
       
@@ -78,6 +84,7 @@ function Tabs() {
         tabBarIcon: ({ color }) => (
           <FontAwesome name="file-text" color={color} size={17} />
         ),
+        unmountOnBlur:true
       }}/>
 </>
       

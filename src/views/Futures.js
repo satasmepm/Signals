@@ -121,7 +121,7 @@ export default function Futures() {
                       <View style={{marginLeft:"5%",width:'85%'}}>
                         <View style={commanStyles.spaceBetweenRow}>
                               <Text style={[commanStyles.coins,{color:context.colors.headingtext}]}>{future.coin}</Text>
-                              <Text style={commanStyles.dates}>{moment(new Date(future.time.seconds * 1000)).format("MMM DD | hh:mm:ssA")}</Text>
+                              <Text style={commanStyles.dates}>{moment(Date.parse(future.time)).format("MMM DD | hh:mm:ssA")}</Text>
                         </View>
                         <View style={[commanStyles.spaceBetweenRow,{marginTop:5}]}>
                           {/* <View style={commanStyles.risk}>
@@ -187,7 +187,7 @@ export default function Futures() {
                 <View style={{marginLeft:"5%",width:'85%'}}>
                   <View style={commanStyles.spaceBetweenRow}>
                         <Text style={[commanStyles.coins,{color:context.colors.headingtext}]}>{future.coin}</Text>
-                        <Text style={commanStyles.dates}>{moment(new Date(future.time.seconds * 1000)).format("MMM DD | hh:mm:ssA")}</Text>
+                        <Text style={commanStyles.dates}>{moment(Date.parse(future.time)).format("MMM DD | hh:mm:ssA")}</Text>
                   </View>
                   <View style={[commanStyles.spaceBetweenRow,{marginTop:5}]}>
                   <TouchableOpacity onPress={()=>{refRBSheet.current.open()}} style={[commanStyles.buttonPrimary,{paddingVertical:2}]}>
